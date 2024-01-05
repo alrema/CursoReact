@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import Filter from "./Filter";
 import Numbers from "./Numbers";
+import PersonForm from "./PersonForm";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -10,7 +12,7 @@ const App = () => {
   ]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
-  const [filteredPersons, setFiltered] = useState(persons);
+  const [filterText, setFilter] = useState("");
 
   const changeNewName = (event) => {
     setNewName(event.target.value);
@@ -21,11 +23,7 @@ const App = () => {
   };
 
   const filter = (event) => {
-    setFiltered(
-      persons.filter((person) => {
-        return person.name.includes(event.target.value);
-      })
-    );
+    setFilter(event.target.value);
   };
 
   const addPerson = (event) => {
@@ -45,22 +43,14 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <div>
-        Filter name with <input onChange={filter} />
-      </div>
+      <Filter onChange={filter} />
       <h2>Add new contact</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input onChange={changeNewName} />
-        </div>
-        <div>
-          number: <input onChange={changeNewNumber} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <Numbers persons={filteredPersons} />
+      <PersonForm
+        onChangeName={changeNewName}
+        onChangeNumber={changeNewNumber}
+        onSubmit={addPerson}
+      />
+      <Numbers persons={persons} filterText={filterText} />
     </div>
   );
 };
