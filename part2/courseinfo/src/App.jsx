@@ -24,6 +24,11 @@ const App = () => {
         exercises: 11,
         id: 4,
       },
+      {
+        name: "API Consumption",
+        exercises: 18,
+        id: 5,
+      },
     ],
   };
 
