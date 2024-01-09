@@ -30,13 +30,21 @@ function App() {
     );
   };
 
+  const selectCountry = (event) => {
+    setCountriesFiltered(
+      countriesFiltered.filter((country) => {
+        return country.name.official == event.target.value;
+      })
+    );
+  };
+
   return (
     <>
       <div>
         <h1> Countrypedia </h1>
         <Filter onChange={filter} />
         {countriesFiltered.length > 0 && (
-          <Countries countries={countriesFiltered} />
+          <Countries countries={countriesFiltered} onClick={selectCountry} />
         )}
       </div>
     </>
