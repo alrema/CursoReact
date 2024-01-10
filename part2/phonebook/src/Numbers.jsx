@@ -1,5 +1,5 @@
 import Person from "./Person";
-const Numbers = ({ persons, filterText }) => {
+const Numbers = ({ persons, filterText, onClick }) => {
   const filteredPersons = persons.filter((person) => {
     return person.name.includes(filterText);
   });
@@ -12,7 +12,7 @@ const Numbers = ({ persons, filterText }) => {
           return (
             <li key={person.id}>
               {" "}
-              <Person person={person} />
+              <Person person={person} onClick={onClick} />
             </li>
           );
         })}

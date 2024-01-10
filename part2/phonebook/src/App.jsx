@@ -11,9 +11,14 @@ const App = () => {
   const [filterText, setFilter] = useState("");
 
   useEffect(() => {
-    personsService.getAll().then((storedPersons) => {
-      setPersons(storedPersons);
-    });
+    personsService
+      .getAll()
+      .then((storedPersons) => {
+        setPersons(storedPersons);
+      })
+      .catch((error) => {
+        window.alert(`error trying to fetch persons: ${error}`);
+      });
   }, []);
 
   const changeNewName = (event) => {
@@ -40,6 +45,22 @@ const App = () => {
         .create({ name: newName, number: newNumber })
         .then((person) => {
           setPersons(persons.concat(person));
+        })
+        .catch((error) => {
+          window.alert(`error trying to add the person: ${error}`);
+        });
+    }
+  };
+
+  const deletePerson = (event) => {
+    const id = event.target.value;
+    const person = persons.find((person) => person.id === id);
+    if (window.confirm(`Delete ${person.name}?`)) {
+      personsService
+        .remove(person.id)
+        .then(setPersons(persons.filter((person) => person.id !== id)))
+        .catch((error) => {
+          window.alert(`error trying to remove the person: ${error}`);
         });
     }
   };
@@ -54,7 +75,11 @@ const App = () => {
         onChangeNumber={changeNewNumber}
         onSubmit={addPerson}
       />
-      <Numbers persons={persons} filterText={filterText} />
+      <Numbers
+        persons={persons}
+        filterText={filterText}
+        onClick={deletePerson}
+      />
     </div>
   );
 };
