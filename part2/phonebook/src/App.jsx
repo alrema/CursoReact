@@ -3,12 +3,16 @@ import Filter from "./Filter";
 import Numbers from "./Numbers";
 import PersonForm from "./PersonForm";
 import personsService from "./services/persons";
+import styles from "./styles";
+import TemporalText from "./TemporalText";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filterText, setFilter] = useState("");
+  const [successText, setSuccess] = useState("");
+  const [errorText, setError] = useState("");
 
   useEffect(() => {
     personsService
@@ -19,7 +23,7 @@ const App = () => {
       .catch((error) => {
         window.alert(`error trying to fetch persons: ${error}`);
       });
-  }, []);
+  }, [errorText]);
 
   const changeNewName = (event) => {
     setNewName(event.target.value);
@@ -46,27 +50,30 @@ const App = () => {
       ) {
         personsService
           .update({ ...person, number: newNumber })
-          .then(
+          .then(() => {
+            setSuccess(`Person ${person.name} was updated successfully`);
             setPersons((prevState) =>
               prevState.map((prevPerson) =>
                 prevPerson.name === person.name
                   ? { ...prevPerson, number: newNumber }
                   : prevPerson
               )
-            )
-          )
+            );
+          })
           .catch((error) => {
-            window.alert(`error trying to remupdate the person: ${error}`);
+            setError(`Error trying to remupdate the person: ${error}`);
           });
       }
     } else {
       personsService
         .create({ name: newName, number: newNumber })
         .then((person) => {
+          setSuccess(`Person ${person.name} was created successfully`);
+
           setPersons(persons.concat(person));
         })
         .catch((error) => {
-          window.alert(`error trying to add the person: ${error}`);
+          setError(`Error trying to add the person: ${error}`);
         });
     }
   };
@@ -77,9 +84,12 @@ const App = () => {
     if (window.confirm(`Delete ${person.name}?`)) {
       personsService
         .remove(person.id)
-        .then(setPersons(persons.filter((person) => person.id !== id)))
+        .then(() => {
+          setSuccess(`Person ${person.name} was deleted successfully`);
+          setPersons(persons.filter((person) => person.id !== id));
+        })
         .catch((error) => {
-          window.alert(`error trying to remove the person: ${error}`);
+          setError(`Error trying to remove the person: ${error}`);
         });
     }
   };
@@ -87,6 +97,16 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <TemporalText
+        style={styles.success}
+        text={successText}
+        updateText={setSuccess}
+      />
+      <TemporalText
+        style={styles.error}
+        text={errorText}
+        updateText={setError}
+      />
       <Filter onChange={filter} />
       <h2>Add new contact</h2>
       <PersonForm
