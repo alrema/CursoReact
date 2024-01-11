@@ -12,4 +12,10 @@ const create = (newPerson) => {
 const remove = (id) => {
   return axios.delete(`${basepath}/${id}`).then((response) => response.data);
 };
-export default { getAll, create, remove };
+const update = (person) => {
+  return axios
+    .put(`${basepath}/${person.id}`, person)
+    .then((response) => response.data);
+};
+
+export default { getAll, create, remove, update };
