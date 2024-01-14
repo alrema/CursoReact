@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const basepath = "http://localhost:3001/persons";
+const basepath = "http://localhost:3001/api/persons";
 
 const getAll = () => {
   return axios.get(basepath).then((response) => response.data);
