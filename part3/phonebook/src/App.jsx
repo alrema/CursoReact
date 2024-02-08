@@ -61,7 +61,9 @@ const App = () => {
             );
           })
           .catch((error) => {
-            setError(`Error trying to remupdate the person: ${error}`);
+            setError(
+              `Error trying to update the person: ${error.response.data.error}`
+            );
           });
       }
     } else {
@@ -73,7 +75,9 @@ const App = () => {
           setPersons(persons.concat(person));
         })
         .catch((error) => {
-          setError(`Error trying to add the person: ${error}`);
+          setError(
+            `Error trying to add the person: ${error.response.data.error}`
+          );
         });
     }
   };
@@ -89,7 +93,9 @@ const App = () => {
           setPersons(persons.filter((person) => person.id !== id));
         })
         .catch((error) => {
-          setError(`Error trying to remove the person: ${error}`);
+          setError(
+            `Error trying to remove the person: ${error.response.data.error}`
+          );
         });
     }
   };
