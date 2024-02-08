@@ -1,21 +1,21 @@
-import axios from "axios";
+import axios from 'axios'
 
-const basepath = "/api/persons";
+const basepath = '/api/persons'
 
 const getAll = () => {
-  return axios.get(basepath).then((response) => response.data);
-};
+  return axios.get(basepath).then((response) => response.data)
+}
 const create = (newPerson) => {
-  return axios.post(basepath, newPerson).then((response) => response.data);
-};
+  return axios.post(basepath, newPerson).then((response) => response.data)
+}
 
 const remove = (id) => {
-  return axios.delete(`${basepath}/${id}`).then((response) => response.data);
-};
+  return axios.delete(`${basepath}/${id}`).then((response) => response.data)
+}
 const update = (person) => {
   return axios
     .put(`${basepath}/${person.id}`, person)
-    .then((response) => response.data);
-};
+    .then((response) => response.data)
+}
 
-export default { getAll, create, remove, update };
+export default { getAll, create, remove, update }
